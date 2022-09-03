@@ -1,0 +1,260 @@
+#include <cstring>
+#include <iostream>
+#include <fstream>
+using namespace std;
+//hacer otro ejercicio a partir de aca
+
+struct nodo{int info;
+nodo* sgte;
+nodo* anterior;};
+
+void ingresoEnListaCircular(int, nodo *& );
+void ingresoEnListaDoble(int ,nodo *& );
+void eliminarListaCircular(int, nodo *& );
+void eliminarEnListaDoble(int ,nodo *& );
+void muestroListaDoble(nodo *&  lDoble );
+void mostrarListaCircular(nodo *& lCircular );
+
+int main(){
+
+	//ingreso numeros en una lista doble
+	/*
+
+	nodo* lDoble=NULL;
+	cout<<"ingreso en lista doble"<<endl;
+	for(int i=0;i<5;i++){
+		ingresoEnListaDoble(i,lDoble );
+	}
+	cout<<"muestro lo que tengo"<<endl;
+	muestroListaDoble(lDoble );
+
+		cout<<"muestro de nuevo: "<<endl;
+	muestroListaDoble(lDoble );
+	cout<<"Elimino todos: "<<endl;
+	for(int i=0;i<5;i++){
+		cout<<"voy a eliminar el numero: "<<i;
+		cout<<" en lista doble"<<endl;
+			eliminarEnListaDoble(i ,lDoble);
+		}
+	*/
+	//Lista Circular
+	nodo * lCircular=NULL;
+	for(int i=0;i<5;i++){
+		ingresoEnListaCircular(i, lCircular);
+		}
+	cout<<" termine de ingresar"<<endl;
+	cout<<"Mostrar todos: ";
+	mostrarListaCircular(lCircular );
+	cout<<endl;
+	cout<<"voy a eliminar el numero 3 en lista circular"<<endl;
+	eliminarListaCircular(3,  lCircular );
+	//cout<<"Mostrar todos: ";
+	mostrarListaCircular(lCircular );
+	cout<<"Voy a borrar todo";
+	for(int y=0;y<6;y++){
+		cout<<"voy a eliminar el numero: "<<y;
+				cout<<" en lista circular"<<endl;
+		eliminarListaCircular(y,  lCircular );
+		}
+	mostrarListaCircular(lCircular);
+
+
+
+
+
+
+	return 0;
+}
+void ingresoEnListaCircular(int info, nodo *& lCircular ){
+	cout<<"Estoy en ingreso en Lista Circular"<<endl;
+	nodo * aux1= lCircular;
+	nodo * nuevo= new nodo();
+	nuevo->info=info;
+	nodo * aux3=lCircular;
+if (aux1==NULL){
+	nuevo->anterior=nuevo;
+	nuevo->sgte=nuevo;
+	lCircular= nuevo;
+	cout<<" *";
+	cout<<endl;
+	return;
+}
+else{
+	/*if(aux1->sgte==lCircular){
+		nuevo->anterior=aux1;
+		nuevo->sgte=aux1;
+		aux1->sgte=nuevo;
+		aux1->anterior=nuevo;
+		return;
+	}*/
+	//aux3=aux1;
+
+	aux1= aux1->sgte;
+	cout<<"* ";
+	while(aux1->sgte!=lCircular){
+		//aux3=aux1;
+			aux1= aux1->sgte;
+			cout<<" *";
+		}
+
+	//aux3->anterior=nuevo;
+	nuevo->sgte=aux3;
+	nuevo->anterior=aux1;
+	aux1->sgte=nuevo;
+	aux3->anterior=nuevo;
+	cout<<" *";
+	cout<<endl;
+}
+return;
+}
+void ingresoEnListaDoble(int info, nodo *& lDoble  ){
+	nodo * aux1= lDoble;
+	nodo * nuevo= new nodo();
+	nuevo->info=info;
+if (aux1==NULL){
+	nuevo->sgte=NULL;
+	nuevo->anterior=NULL;
+	lDoble=nuevo;
+}
+else{
+	while(aux1->sgte !=NULL){
+		aux1= aux1->sgte;
+	}
+	aux1->sgte=nuevo;
+	nuevo->sgte=NULL;
+	nuevo->anterior=aux1;
+}
+return;
+}
+
+
+void eliminarListaCircular(int x, nodo *& lCircular ){
+	nodo * aux1=lCircular;
+	nodo * aux2=NULL;
+	cout<<"BUsco el numero"<<endl;
+	if(lCircular==NULL){
+		cout<<"La lista esta vacia, no hago nada"<<endl;
+		return;
+	}
+	if(aux1==aux1->sgte && aux1->info==x){
+		cout<<"lo encontre y es el unico nodo"<<endl;
+		lCircular=NULL;
+		delete(aux1);
+		return;
+	}
+	if(aux1->info==x){
+		cout<<"lo encontre y es el /primer/ nodo"<<endl;
+		lCircular=lCircular->sgte;
+		aux2=aux1->anterior;
+		aux2->sgte=aux1->sgte;
+		aux1->sgte->anterior=aux2;
+		//aux2=aux1->sgte;
+		//aux2->anterior=aux1->anterior;
+		delete(aux1);
+		return;
+	}
+	//lCircular==NULL si pasa eso esta vacia no hago nada
+	//while(lCircular!=NULL && aux1->sgte!=lCircular && aux1->info!=x){
+	aux2=aux1;
+	aux1=aux1->sgte;
+	while( aux1!=lCircular && aux1->info!=x){
+		aux2=aux1;
+		aux1=aux1->sgte;
+	}
+	if(aux1==lCircular){
+		cout<<"No lo encontre"<<endl;
+		return;
+	}
+	//si lo encuentro y tiene mas de uno o borro asi
+	if(aux1->info==x && aux1!=lCircular){
+		cout<<"encontre el numero: "<<x<<" y lo borro"<<endl;
+		aux2->sgte=aux1->sgte;
+		aux2=aux1->sgte;
+		aux2->anterior=aux1->anterior;
+		//aux1->sgte->anterior=aux1->anterior;
+		delete (aux1);
+		return;
+	}
+	//si lo encuentro y tiene solo uno lo borro directamente
+	/*	if(aux1->info==x && aux1->sgte==aux1){
+			cout<<"encontre el numero, es el unico nodo, y lo borro"<<endl;
+			delete (aux1);
+		}
+*/
+	return;
+}
+void eliminarEnListaDoble(int x,nodo *& lDoble){
+	nodo * aux1=lDoble;
+		nodo * aux2=NULL;
+		//cout<<"Busco el numero"<<endl;
+		if(lDoble==NULL){
+			cout<<"La lista Doble esta vacia"<<endl;
+			return;
+		}
+		if(lDoble->info==x){
+			if(lDoble->sgte==NULL){
+				cout<<"Elimino el ultimo nodo"<<endl;
+				delete(aux1);
+				return;
+			}
+			cout<<"Elimino el primer nodo"<<endl;
+			aux2=lDoble;
+			aux1=aux1->sgte;
+			aux1->anterior=NULL;
+			cout<<"asigne el sig nodo"<<endl;
+			lDoble=lDoble->sgte;
+			delete(aux2);
+			return;
+		}
+		while( aux1!=NULL && aux1->info!=x){
+			aux2=aux1;
+			aux1=aux1->sgte;
+		}
+		if(aux1->info==x){
+			cout<<"Lo encontre y lo voy a borrar"<<endl;
+			aux2->sgte=aux1->sgte;
+			if(aux2->sgte==NULL){
+				delete (aux1);
+				return;
+			}
+			aux1->sgte->anterior=aux2;
+			delete (aux1);
+		}
+
+	return;
+
+
+}
+//asumo q esta llena
+void muestroListaDoble(nodo *&  lDoble ){
+	if(lDoble==NULL){
+		cout<<"La lista doble esta vacia"<<endl;
+		return;
+	}
+	nodo * aux = lDoble->sgte;
+	cout<<"Lista doble: "<<lDoble->info;
+	while(aux!=NULL){
+		cout<<", "<<aux->info;
+		aux=aux->sgte;
+	}
+	cout<<endl;
+	return;
+}
+void mostrarListaCircular(nodo *& lCircular ){
+	nodo * aux=lCircular;
+	if(aux==NULL){
+		cout<<"La lista esta vacia "<<endl;
+		return;
+	}
+	cout<<" ";
+	cout<<aux->info;
+	aux= aux->sgte;
+//	aux= aux->anterior;
+	while( aux!=lCircular){
+		cout<<", ";
+		cout<<aux->info;
+		aux= aux->sgte;
+		//aux= aux->anterior;
+	}
+	return;
+}
